@@ -1,0 +1,26 @@
+{
+  "name": "ns3-bgp-vis",
+  "version": "0.0.1",
+  "description": "ns3-bgp visualizer",
+  "main": "vis-server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node vis-server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nat-lab/ns3-bgp-vis.git"
+  },
+  "keywords": [
+    "ns3-bgp"
+  ],
+  "author": "Honghao Zeng <hozeng@syr.edu>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nat-lab/ns3-bgp-vis/issues"
+  },
+  "homepage": "https://github.com/nat-lab/ns3-bgp-vis#readme",
+  "dependencies": {
+    "vis": "^4.21.0"
+  }
+}

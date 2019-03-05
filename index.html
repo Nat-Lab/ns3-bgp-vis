@@ -1,0 +1,66 @@
+<html>
+<head>
+<title>ns3-vis</title>
+<script type="text/javascript" src="node_modules/vis/dist/vis.js"></script>
+<link href="node_modules/vis/dist/vis.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+html, body {
+	height: 100%;
+	margin: 0;
+	font-family: monospace;
+}
+
+#display {
+	width: 100%;
+	min-height: 100%;
+	margin: 0;
+}
+
+.infoplate {
+	position: absolute;
+	width: 200px;
+	right: 4px;
+	top: 4px;
+	border: 3px solid #333;
+	background-color: #fff;
+	padding: 1px;
+}
+
+.hide {
+	display: none;
+}
+
+.key {
+	font-weight: 700;
+	color: #000;
+}
+
+ul {
+	margin: 0;
+	padding-left: 0px;
+	list-style-type: none;
+	cursor: pointer;
+}
+
+li:hover {
+	background-color: #ddd;
+}
+
+li:active {
+	background-color: #ccc;
+}
+
+</style>
+<body>
+<div id="display"></div>
+<div class="infoplate">
+<div><span class="key">Router: </span> AS<span id="infoplate_as"></span></div>
+<div><div class="key">Peers </div>
+	<ul id="infoplate_peers"></ul>
+</div>
+<div><div class="key">Routes </div>
+	<ul id="infoplate_routes"></ul>
+</div>
+</div>
+<script src="js/app.js"></script>
+</body>
