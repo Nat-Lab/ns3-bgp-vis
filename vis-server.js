@@ -21,31 +21,43 @@ const BGPMonClient = function (in_fifo, out_fifo) {
             [o_stream, i_stream].forEach(s => s.close());
         }
         else {
-            i_stream.write('_');
-            o_stream.on('data', (data) => {
-                res(data.toString()
-                    .split('\n')
-                    .filter(line => line != '')
-                    .map(line => line.split('|'))
-                    .map(col => {
-                        return { 
-                            as: col[0], 
-                            peers: col[1].split(';').filter(elem => elem != ''),
-                            routes: col[2].split(';').filter(elem => elem != '')
-                                .map(r => r.split(','))
-                                .map(r => { 
-                                    return { 
-                                        prefix: r[0], 
-                                        as_path: r[1].split(' ').filter(elem => elem != ''), 
-                                        nexthop: r[2], 
-                                        local: r[3] != '0' 
-                                    }; 
-                                })
-                        };
-                    })
-                );
-                [o_stream, i_stream].forEach(s => s.close());
-            });
+            try {
+                i_stream.write('_');
+                o_stream.on('data', (data) => {
+                    res(data.toString()
+                        .split('\n')
+                        .filter(line => line != '')
+                        .map(line => line.split('|'))
+                        .map(col => {
+                            try {
+                                return { 
+                                    as: col[0], 
+                                    peers: col[1].split(';').filter(elem => elem != ''),
+                                    routes: col[2].split(';').filter(elem => elem != '')
+                                        .map(r => r.split(','))
+                                        .map(r => { 
+                                            try {
+                                                return { 
+                                                    prefix: r[0], 
+                                                    as_path: r[1].split(' ').filter(elem => elem != ''), 
+                                                    nexthop: r[2], 
+                                                    local: r[3] != '0' 
+                                                }; 
+                                            } catch (e) {
+                                                rej (e);
+                                            }
+                                        })
+                                };
+                            } catch (e) {
+                                rej (e);
+                            }
+                        })
+                    );
+                    [o_stream, i_stream].forEach(s => s.close());
+                });
+            } catch (e) {
+                rej (e);
+            }
         }
     });
 };
@@ -104,4 +116,6 @@ const http_handler = async function (req, res) {
 }
 
 var server = http.createServer(http_handler);
-server.listen(Number.parseInt(process.argv[3]), process.argv[2]);
+server.listen(Number.parseInt(process.argv[3]), process.argv[2], 64, () => {
+    console.log(`Visualization server ready at ${process.argv[2]}:${process.argv[3]}.`);
+});
